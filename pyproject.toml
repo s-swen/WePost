@@ -1,0 +1,59 @@
+[project]
+name = "wepost"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiosmtplib>=5.1.3",
+    "aiosqlite>=0.22.1",
+    "alembic>=1.20.0",
+    "boto3>=1.43.108",
+    "fastapi[standard]>=0.141.1",
+    "greenlit>=0.3.0",
+    "pillow>=12.3.0",
+    "psycopg[binary]>=3.3.6",
+    "pwdlib[argon2]>=0.3.1",
+    "pydantic-settings>=2.15.0",
+    "pyjwt>=2.14.0",
+    "sqlalchemy>=2.0.52",
+]
+
+[dependency-groups]
+dev = [
+    "moto[s3]>=5.2.3",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+]
+
+
+[tool.pytest.ini_options]
+addopts = "--cov=. --cov-report=term-missing --cov-report=html --ignore=check_s3.py --ignore=populate_db.py"
+
+[tool.coverage.run]
+source = ["."]
+relative_files = true  # 🆕 THIS IS THE MAGIC FIX FOR WINDOWS
+concurrency = ["greenlet", "thread"]
+omit = [
+    "tests/*",       # ❌ Don't measure the tests themselves
+    ".venv/*",       # ❌ Ignore your uv virtual environment
+    "venv/*",        # ❌ Ignore standard virtual environments
+    "alembic/*",     # ❌ Ignore database migration scripts
+    "htmlcov/*",     # 🆕 Ignore the generated HTML coverage folder
+    "migrations/*",  # 🆕 Ignore any other DB migration folders
+    "check_s3.py",   # 🆕 Ignore manual S3 connection checker script
+    "populate_db.py",
+]
+
+[tool.coverage.paths]
+source = [
+    ".",
+    "C:/Users/Tim Swen/Desktop/Delete/wepost",
+] 
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",       # Standard way to ignore a specific line
+    "if __name__ == .__main__.:", # Ignore script entry points
+    "raise NotImplementedError"   # Ignore abstract method stubs
+]
